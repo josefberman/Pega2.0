@@ -1,0 +1,208 @@
+# Corporate Intelligence Agentic System Configuration
+
+# LLM Configuration
+llm:
+  provider: "01-ai"
+  model: "Yi-34B-200K"
+  api_base: "https://api.01-ai.com/v1"
+  api_key: "${YI_API_KEY}"
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database Configuration
+database:
+  type: "postgresql"  # Options: postgresql, mysql, sqlite
+  host: "localhost"
+  port: 5432
+  name: "corporate_intelligence"
+  user: "${DB_USER}"
+  password: "${DB_PASSWORD}"
+  pool_size: 10
+  max_overflow: 20
+
+# Redis Configuration (for caching and job queues)
+redis:
+  host: "localhost"
+  port: 6379
+  password: "${REDIS_PASSWORD}"
+  db: 0
+  max_connections: 20
+
+# Elasticsearch Configuration (for document search)
+elasticsearch:
+  hosts: ["localhost:9200"]
+  username: "${ES_USER}"
+  password: "${ES_PASSWORD}"
+  index_prefix: "corporate_intelligence"
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  cors_origins: ["*"]
+  rate_limit: 100  # requests per minute
+
+# Agent Configuration
+agents:
+  tech_researcher:
+    enabled: true
+    max_concurrent: 3
+    timeout: 300
+    output_format: "markdown"
+    sources:
+      - "academic_papers"
+      - "patent_databases"
+      - "industry_reports"
+      - "conference_proceedings"
+    
+  data_miner:
+    enabled: true
+    max_concurrent: 5
+    timeout: 600
+    rate_limit: 10  # requests per second
+    user_agent: "CorporateIntelligenceBot/1.0"
+    sources:
+      - "news_websites"
+      - "social_media"
+      - "financial_data"
+      - "government_databases"
+      - "company_websites"
+    
+  data_analyst:
+    enabled: true
+    max_concurrent: 2
+    timeout: 180
+    statistical_methods:
+      - "correlation_analysis"
+      - "time_series_analysis"
+      - "outlier_detection"
+      - "trend_analysis"
+      - "clustering"
+    
+  operations_researcher:
+    enabled: true
+    max_concurrent: 2
+    timeout: 240
+    forecasting_methods:
+      - "prophet"
+      - "arima"
+      - "neural_networks"
+      - "monte_carlo_simulation"
+    
+  orchestrator:
+    enabled: true
+    workflow_timeout: 1800  # 30 minutes
+    retry_attempts: 3
+    retry_delay: 60
+
+# Data Processing Configuration
+data_processing:
+  batch_size: 1000
+  max_file_size: "100MB"
+  supported_formats:
+    - "csv"
+    - "json"
+    - "xml"
+    - "html"
+    - "pdf"
+    - "excel"
+  
+  storage:
+    type: "local"  # Options: local, s3, gcs
+    path: "./data/storage"
+    retention_days: 365
+
+# Web Scraping Configuration
+scraping:
+  delay_between_requests: 1.0
+  max_retries: 3
+  timeout: 30
+  respect_robots_txt: true
+  use_proxies: false
+  proxy_list: []
+  
+  headers:
+    User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    Accept-Language: "en-US,en;q=0.5"
+    Accept-Encoding: "gzip, deflate"
+    Connection: "keep-alive"
+
+# Monitoring and Logging
+monitoring:
+  log_level: "INFO"
+  log_file: "./logs/system.log"
+  max_log_size: "100MB"
+  log_retention: 30
+  
+  metrics:
+    enabled: true
+    port: 9090
+    endpoint: "/metrics"
+  
+  health_check:
+    enabled: true
+    interval: 60
+    timeout: 10
+
+# Security Configuration
+security:
+  jwt_secret: "${JWT_SECRET}"
+  jwt_algorithm: "HS256"
+  jwt_expiration: 3600  # 1 hour
+  
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 100
+    burst_size: 20
+  
+  cors:
+    allowed_origins: ["*"]
+    allowed_methods: ["GET", "POST", "PUT", "DELETE"]
+    allowed_headers: ["*"]
+
+# External APIs Configuration
+external_apis:
+  news_api:
+    base_url: "https://newsapi.org/v2"
+    api_key: "${NEWS_API_KEY}"
+    rate_limit: 1000  # requests per day
+    
+  financial_api:
+    base_url: "https://api.polygon.io"
+    api_key: "${POLYGON_API_KEY}"
+    rate_limit: 5000  # requests per day
+    
+  patent_api:
+    base_url: "https://patents.google.com"
+    rate_limit: 100  # requests per minute
+
+# Workflow Configuration
+workflow:
+  default_depth: "comprehensive"  # Options: basic, standard, comprehensive
+  parallel_execution: true
+  result_caching: true
+  cache_ttl: 3600  # 1 hour
+  
+  steps:
+    tech_research:
+      required: true
+      weight: 0.3
+    data_mining:
+      required: true
+      weight: 0.25
+    data_analysis:
+      required: true
+      weight: 0.25
+    operations_research:
+      required: true
+      weight: 0.2
+
+# Development Configuration
+development:
+  debug: false
+  hot_reload: true
+  auto_migrate: true
+  seed_data: false 
