@@ -44,11 +44,28 @@ This system consists of five specialized agents working together to provide comp
 ## Features
 
 - **Multi-Agent Coordination**: LangGraph-based workflow orchestration
-- **Advanced LLM Integration**: Uses 01-ai/Yi-34B-200K model for all agents
+- **Local LLM Integration**: Uses Ollama with Llama 3.2:3B model for all agents
 - **Comprehensive Data Pipeline**: From web scraping to advanced analytics
 - **Real-time Market Intelligence**: Continuous monitoring and analysis
 - **Strategic Forecasting**: Advanced simulations and predictions
 - **Scalable Architecture**: Docker-based deployment with microservices
+
+## Prerequisites
+
+1. **Install Ollama**: 
+   ```bash
+   # Download and install Ollama from https://ollama.ai
+   ```
+
+2. **Pull Llama 3.2:3B Model**:
+   ```bash
+   ollama pull llama3.2:3b
+   ```
+
+3. **Start Ollama Service**:
+   ```bash
+   ollama serve
+   ```
 
 ## Quick Start
 
@@ -60,7 +77,7 @@ This system consists of five specialized agents working together to provide comp
 2. **Configure the System**:
    ```bash
    cp config.yaml.example config.yaml
-   # Edit config.yaml with your API keys and settings
+   # Edit config.yaml with your settings
    ```
 
 3. **Run the System**:
@@ -78,8 +95,7 @@ This system consists of five specialized agents working together to provide comp
 ## Configuration
 
 The system uses a YAML configuration file (`config.yaml`) for:
-- API keys and endpoints
-- Model parameters
+- Ollama model settings
 - Database connections
 - Agent-specific settings
 - Workflow configurations

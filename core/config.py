@@ -15,10 +15,10 @@ load_dotenv()
 
 class LLMConfig(BaseSettings):
     """LLM configuration settings."""
-    provider: str = "01-ai"
-    model: str = "Yi-34B-200K"
-    api_base: str = "https://api.01-ai.com/v1"
-    api_key: str = Field(default_factory=lambda: os.getenv("YI_API_KEY", ""))
+    provider: str = "ollama"
+    model: str = "llama3.2:3b"
+    api_base: str = "http://localhost:11434"
+    api_key: str = ""  # No API key needed for local Ollama
     temperature: float = 0.7
     max_tokens: int = 4000
     timeout: int = 120
@@ -189,7 +189,6 @@ class SystemConfig:
     def validate(self) -> bool:
         """Validate configuration."""
         required_env_vars = [
-            "YI_API_KEY",
             "DB_USER", 
             "DB_PASSWORD",
             "JWT_SECRET"

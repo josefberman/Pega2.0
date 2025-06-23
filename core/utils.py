@@ -48,14 +48,14 @@ except LookupError:
     nltk.download('wordnet')
 
 
-class YiLLM(LLM):
-    """Custom LLM class for 01-ai/Yi-34B-200K model."""
+class OllamaLLM(LLM):
+    """Custom LLM class for local Llama 3.2:3B model via Ollama."""
     
     config = get_config()
     
     @property
     def _llm_type(self) -> str:
-        return "yi-34b-200k"
+        return "ollama-llama3.2-3b"
     
     def _call(
         self,
@@ -64,23 +64,29 @@ class YiLLM(LLM):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> str:
-        """Call the Yi model API."""
+        """Call the local Ollama Llama model."""
         headers = {
-            "Authorization": f"Bearer {self.config.llm.api_key}",
             "Content-Type": "application/json"
         }
         
         data = {
-            "model": self.config.llm.model,
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": self.config.llm.temperature,
-            "max_tokens": self.config.llm.max_tokens,
+            "model": "llama3.2:3b",
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": self.config.llm.temperature,
+                "num_predict": self.config.llm.max_tokens,
+                "top_k": 40,
+                "top_p": 0.9,
+                "repeat_penalty": 1.1,
+                "stop": stop or []
+            },
             **kwargs
         }
         
         try:
             response = requests.post(
-                f"{self.config.llm.api_base}/chat/completions",
+                f"{self.config.llm.api_base}/api/generate",
                 headers=headers,
                 json=data,
                 timeout=self.config.llm.timeout
@@ -88,17 +94,17 @@ class YiLLM(LLM):
             response.raise_for_status()
             
             result = response.json()
-            return result["choices"][0]["message"]["content"]
+            return result.get("response", "")
         
         except requests.exceptions.RequestException as e:
-            logger.error(f"Error calling Yi API: {e}")
+            logger.error(f"Error calling Ollama API: {e}")
             raise e
     
     @property
     def _identifying_params(self) -> Dict[str, Any]:
         """Get identifying parameters."""
         return {
-            "model": self.config.llm.model,
+            "model": "llama3.2:3b",
             "temperature": self.config.llm.temperature,
             "max_tokens": self.config.llm.max_tokens
         }
@@ -129,9 +135,9 @@ def setup_logging(log_file: str = "./logs/system.log", level: str = "INFO"):
     return logger
 
 
-def get_llm() -> YiLLM:
+def get_llm() -> OllamaLLM:
     """Get the configured LLM instance."""
-    return YiLLM()
+    return OllamaLLM()
 
 
 def create_system_message(agent_type: AgentType, context: str = "") -> SystemMessage:
