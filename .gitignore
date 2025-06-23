@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environment
+.env
+.env.*
+*.env
+*.env.*
+
+# Jupyter
+.ipynb_checkpoints
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+*.iml
+
+# Logs
+logs/
+*.log
+
+# Test and coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+
+# Database
+*.sqlite3
+*.db
+*.db-journal
+
+# Backup
+*.bak
+*.swp
+*~
+
+# Other
+*.pid
+*.pid.lock
+
+# Ignore data and output
+/data/
+/output/ 
